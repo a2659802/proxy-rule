@@ -8,54 +8,74 @@ proxy-providers:
       interval: 300
     proxy: 🟢 直连
     url: "输入你的订阅地址"
+  # Airport_02:
+  #   type: http
+  #   interval: 1800
+  #   health-check:
+  #     enable: true
+  #     url: https://www.gstatic.com/generate_204
+  #     interval: 300
+  #   proxy: 🟢 直连
+  #   url: "输入你的订阅地址2"
 
 proxies:
 - name: "🎯 直连"
   type: direct
   udp: true
 
-pr: &pr {type: select, proxies: [🚀 节点选择, 🔯 香港故转, 🔯 日本故转, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🌐 全部节点, 0️⃣ 0.1倍率, 1️⃣ 1倍率, 2️⃣ 2倍率, 🎯 直连]}
+pr: &pr {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🔯 香港故转, 🔯 台湾故转, 🔯 日本故转, 🔯 加坡故转, ♻️ 香港自动, 🇺🇲 美国节点, 🌐 全部节点, 0️⃣ 0.1倍率, 1️⃣ 1倍率, 2️⃣ 2倍率, 🎯 直连]}
+
+prtrim: &prtrim {type: select, proxies: [🚀 节点选择, ♻️ 自动选择, 🔯 香港故转, 🔯 日本故转, 🔯 加坡故转, 🔯 台湾故转, 🎯 直连]}
 
 proxy-groups:
-  - {name: 🚀 节点选择, type: select, proxies: [🔯 香港故转, 🔯 日本故转, ♻️ 香港自动, ♻️ 日本自动, ♻️ 美国自动, ♻️ 自动选择, 🇭🇰 香港节点, 🇯🇵 日本节点, 🇺🇲 美国节点, 🌐 全部节点, 0️⃣ 0.1倍率, 1️⃣ 1倍率, 2️⃣ 2倍率, 🎯 直连]}
-  - {name: 📹 YouTube, <<: *pr}
-  - {name: 🍀 Google, <<: *pr}
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 自动选择, 🔯 香港故转, 🔯 台湾故转, 🔯 日本故转, 🔯 加坡故转, ♻️ 香港自动, 🇺🇲 美国节点, 🌐 全部节点, 0️⃣ 0.1倍率, 1️⃣ 1倍率, 2️⃣ 2倍率, 🎯 直连]}
   - {name: 🤖 ChatGPT, <<: *pr}
-  - {name: 👨🏿‍💻 GitHub, <<: *pr}
-  - {name: 🐬 OneDrive, <<: *pr}
-  - {name: 🪟 Microsoft, <<: *pr}
-  - {name: 📲 Telegram, <<: *pr}
-  - {name: 💶 PayPal, <<: *pr}
+  - {name: 🍀 Google, <<: *prtrim}
+  - {name: 📹 YouTube, <<: *pr}
+  - {name: 📺 巴哈姆特, <<: *prtrim}
+  - {name: 👨🏿‍💻 GitHub, <<: *prtrim}
+  - {name: 🐬 OneDrive, <<: *prtrim}
+  - {name: 🪟 Microsoft, <<: *prtrim}
+  - {name: 📲 Telegram, <<: *prtrim}
+  - {name: 💶 PayPal, <<: *prtrim}
 #  - {name: 🍎 Apple, type: select, proxies: [🎯 直连, 🚀 节点选择]}
   - {name: 🎯 全球直连, type: select, proxies: [🎯 直连, 🚀 节点选择]}
-  - {name: 🐟 漏网之鱼, <<: *pr}
-  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
-  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)日|jp|japan"}
+  - {name: 🐟 漏网之鱼, <<: *prtrim}
+#  - {name: 🇭🇰 香港节点, type: select, include-all: true, filter: "(?i)港|hk|hongkong|hong kong"}
+#  - {name: 🇯🇵 日本节点, type: select, include-all: true, filter: "(?i)日|jp|japan"}
   - {name: 🇺🇲 美国节点, type: select, include-all: true, filter: "(?i)美|us|unitedstates|united states"}
   - {name: 🔯 香港故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+  - {name: 🔯 台湾故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(台|TW|(?i)Taiwan))^((?!(港|日|韩|新|深|美)).)*$"}
   - {name: 🔯 日本故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
+  - {name: 🔯 加坡故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(新加坡|坡|狮城|SG|(?i)Singapore))^((?!(港|台|韩|美)).)*$" }
   - {name: "0️⃣ 0.1倍率", type: fallback, include-all: true, interval: 30, filter: "^0\\.1倍率.*"}
   - {name: "1️⃣ 1倍率", type: fallback, include-all: true, interval: 300, filter: "^1(.*?)倍率.*"}
   - {name: "2️⃣ 2倍率", type: fallback, include-all: true, interval: 300, filter: "^2(.*?)倍率.*"}
-  - {name: ♻️ 香港自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
-  - {name: ♻️ 日本自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
-  - {name: ♻️ 美国自动, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
-  - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
+  - {name: ♻️ 香港自动, type: url-test, include-all: true, tolerance: 40, interval: 300, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|深|美)).)*$"}
+#  - {name: ♻️ 日本自动, type: url-test, include-all: true, tolerance: 40, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
+#  - {name: ♻️ 美国自动, type: url-test, include-all: true, tolerance: 40, interval: 300, filter: "(?=.*(美|US|(?i)States|America))^((?!(港|台|日|韩|新)).)*$"}
+  - {name: ♻️ 自动选择, type: url-test, include-all: true, tolerance: 40, interval: 300, filter: "^((?!(直连|流量|套餐|剩余|发布|官网)).)*$"}
   - {name: 🌐 全部节点, type: select, include-all: true}
+  - {name: 🔌 专线节点, type: select, include-all: true, filter: "(?i)专线|iplc|iepl"}
+  - {name: 🛑 广告拦截, type: select, proxies: [REJECT, REJECT-DROP, PASS, DIRECT]}
 rules:
   - RULE-SET,private_domain,🎯 直连
+  - RULE-SET,private_ip,🎯 直连
 #  - RULE-SET,apple_domain,🍎 Apple
   - RULE-SET,proxylite,🚀 节点选择
+  - RULE-SET,ad_domain,🛑 广告拦截
   - RULE-SET,ai,🤖 ChatGPT
   - RULE-SET,github_domain,👨🏿‍💻 GitHub
-  - RULE-SET,youtube_domain,📹 YouTube
   - RULE-SET,google_domain,🍀 Google
+  - RULE-SET,youtube_domain,📹 YouTube
+  - RULE-SET,baha_domain,📺 巴哈姆特
   - RULE-SET,onedrive_domain,🐬 OneDrive
   - RULE-SET,microsoft_domain,🪟 Microsoft
   - RULE-SET,telegram_domain,📲 Telegram
   - RULE-SET,paypal_domain,💶 PayPal
   - RULE-SET,geolocation-!cn,🚀 节点选择
   - RULE-SET,cn_domain,🎯 全球直连
+  - RULE-SET,download,🎯 全球直连
   - RULE-SET,google_ip,🍀 Google,no-resolve
   - RULE-SET,telegram_ip,📲 Telegram,no-resolve
   - RULE-SET,cn_ip,🎯 全球直连
@@ -65,9 +85,9 @@ rule-anchor:
   domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
   class: &class {type: http, interval: 86400, behavior: classical, format: text}
 rule-providers: 
+# use mrs file, behavior is domain
   private_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs" }
-  proxylite: { <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/master/ProxyLite.list" }
-  ai: { <<: *domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-ai-chat-!cn.mrs" }
+  ai: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/category-ai-chat-!cn.mrs" }
   youtube_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs" }
   google_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs" }
   github_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs" }
@@ -79,7 +99,13 @@ rule-providers:
   gfw_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs" }
   geolocation-!cn: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs" }
   cn_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs" }
-  
+  baha_domain: { <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/bahamut.mrs" }
+# use mrs file, behavior is ip
   cn_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs" }
   google_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs" }
   telegram_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs" }
+  private_ip: { <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geoip/private.mrs" }
+# use list file, behavior is classical
+  proxylite: { <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/master/ProxyLite.list" }
+  download: { <<: *class, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Download.list" }
+  ad_domain: { <<: *class, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/refs/heads/master/Clash/BanAD.list" }
