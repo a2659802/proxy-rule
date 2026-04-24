@@ -2,6 +2,7 @@
 
 # 域名后缀匹配
 DOMAIN-SUFFIX,kdays.net
+DOMAIN-SUFFIX,zi0.cc
 DOMAIN-SUFFIX,acgdmzy.com
 DOMAIN-SUFFIX,mikanani.me
 DOMAIN-SUFFIX,acgrip.com
@@ -11,6 +12,7 @@ DOMAIN-SUFFIX,novelia.cc
 DOMAIN-SUFFIX,vcb-s.com
 DOMAIN-SUFFIX,musescore.com
 DOMAIN-SUFFIX,binance.com
+
 
 # 域名关键字匹配
 DOMAIN-KEYWORD,discord
